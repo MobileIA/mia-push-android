@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         socket.emit("ranking_top", params, new MobileiaPush.Callback<JsonArray>() {
             @Override
             public void call(JsonArray obj) {
-                System.out.println("Respuersta3: " + obj);
+                System.out.println("Respuersta4: " + obj);
                 /*for(JsonElement ranking : obj){
                     System.out.println("Respuersta3: " + ranking);
                 }*/

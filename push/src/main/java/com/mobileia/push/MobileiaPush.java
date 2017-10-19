@@ -104,9 +104,19 @@ public class MobileiaPush {
         mSocket.on(event, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-
-
-                callback.call(args[0]);
+                // Verificamos si tiene elementos recibidos
+                if(args.length == 0){
+                    return;
+                }
+                // verificamos si se envio un callback
+                if(callback == null){
+                    return;
+                }
+                // Verificamos si el argumento es un JSON
+                if(args[0] instanceof JSONObject || args[0] instanceof JSONArray){
+                    // Llamar al call
+                    callback.call(mParser.parse(args[0].toString()));
+                }
             }
         });
     }
@@ -207,10 +217,9 @@ public class MobileiaPush {
         // Verificar si hay un usuario logueado
         if(user != null){
             // Agregamos a los parametros el AccessToken
-            //opts.query = opts.query + "&accessToken=" + user.getAccessToken();
-            //opts.query = opts.query + "&accessToken=7c62bb699d03e1484db378995ae550e69163c158";
+            opts.query = opts.query + "&accessToken=" + user.getAccessToken();
         }
-        opts.query = opts.query + "&accessToken=7c62bb699d03e1484db378995ae550e69163c158";
+        //opts.query = opts.query + "&accessToken=7c62bb699d03e1484db378995ae550e69163c158";
 
         return opts;
     }
