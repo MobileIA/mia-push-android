@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/MobileIA/mia-push-android'
     gitUrl = 'https://github.com/MobileIA/mia-push-android.git'
 
-    libraryVersion = '0.0.2'
+    libraryVersion = '0.0.3'
 
     developerId = 'mobileia'
     developerName = 'MobileIA'
@@ -31,8 +31,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 2
-        versionName "0.0.2"
+        versionCode 3
+        versionName "0.0.3"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 

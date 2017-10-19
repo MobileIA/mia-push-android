@@ -1,6 +1,6 @@
 package com.mobileia.push;
 
-import android.content.Context;
+import android.app.Activity;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -48,7 +48,7 @@ public class MobileiaPush {
     /**
      * Almacena el contexto
      */
-    protected Context mContext;
+    protected Activity mContext;
     /**
      * Servicio para convertir los datos recibidos a Objetos
      */
@@ -58,7 +58,7 @@ public class MobileiaPush {
      * Iniciamos conexion del socket
      * @param context
      */
-    public MobileiaPush init(Context context){
+    public MobileiaPush init(Activity context){
         // Guardamos el contexto
         mContext = context;
         // Iniciamos el socket
@@ -104,19 +104,8 @@ public class MobileiaPush {
         mSocket.on(event, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                // Verificamos si tiene elementos recibidos
-                if(args.length == 0){
-                    return;
-                }
-                // verificamos si se envio un callback
-                if(callback == null){
-                    return;
-                }
-                // Verificamos si el argumento es un JSON
-                if(args[0] instanceof JSONObject || args[0] instanceof JSONArray){
-                    // Llamar al call
-                    callback.call(mParser.parse(args[0].toString()));
-                }
+                // Llamar al callback
+                callCallback(callback, args);
             }
         });
     }
@@ -172,23 +161,38 @@ public class MobileiaPush {
             mSocket.emit(EVENT_MIAPUSH, params, new Ack() {
                 @Override
                 public void call(Object... args) {
-                    // Verificamos si tiene elementos recibidos
-                    if(args.length == 0){
-                        return;
-                    }
-                    // verificamos si se envio un callback
-                    if(callback == null){
-                        return;
-                    }
-                    // Verificamos si el argumento es un JSON
-                    if(args[0] instanceof JSONObject || args[0] instanceof JSONArray){
-                        // Llamar al call
-                        callback.call(mParser.parse(args[0].toString()));
-                    }
+                    // Llamar al callback
+                    callCallback(callback, args);
                 }
             });
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Funcion que se encarga de procesar los datos y llamar al callback
+     * @param callback
+     * @param args
+     */
+    protected void callCallback(final Callback callback, final Object... args){
+        // Verificamos si tiene elementos recibidos
+        if(args.length == 0){
+            return;
+        }
+        // verificamos si se envio un callback
+        if(callback == null){
+            return;
+        }
+        // Verificamos si el argumento es un JSON
+        if(args[0] instanceof JSONObject || args[0] instanceof JSONArray){
+            mContext.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    // Llamar al call
+                    callback.call(mParser.parse(args[0].toString()));
+                }
+            });
         }
     }
 
