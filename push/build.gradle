@@ -1,5 +1,29 @@
 apply plugin: 'com.android.library'
 
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'mobileia-push'
+
+    publishedGroupId = 'com.mobileia'
+    libraryName = 'MIA Push Library'
+    artifact = 'push'
+
+    libraryDescription = 'Library.'
+
+    siteUrl = 'https://github.com/MobileIA/mia-push-android'
+    gitUrl = 'https://github.com/MobileIA/mia-push-android.git'
+
+    libraryVersion = '0.0.1'
+
+    developerId = 'mobileia'
+    developerName = 'MobileIA'
+    developerEmail = 'matias.camiletti@mobileia.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
@@ -8,7 +32,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
-        versionName "1.0"
+        versionName "0.0.1"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -27,9 +51,13 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:26.+'
+    compile 'com.mobileia:authentication:0.0.30'
     compile ('io.socket:socket.io-client:1.0.0') {
         // excluding org.json which is provided by Android
         exclude group: 'org.json', module: 'json'
     }
     testCompile 'junit:junit:4.12'
 }
+
+apply from: '../installv1.gradle'
+apply from: '../bintrayv1.gradle'
